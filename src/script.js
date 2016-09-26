@@ -34,25 +34,12 @@ $(document).ready(function () {
         }
 
         nextPlayer();
+        initPlayground();
         drawPlayground();
         turn();
     }
 
-    function drawPlayground() {
-        $(".board #score_1").text(getScore(1));
-        $(".board #score_2").text(getScore(2));
-
-        if(player == 1) {
-            $("#player_1").addClass("turn");
-            $("#player_2").removeClass("turn");
-        } else if(player == 2) {
-            $("#player_2").addClass("turn");
-            $("#player_1").removeClass("turn");
-        } else {
-            $("#player_1").removeClass("turn");
-            $("#player_2").removeClass("turn");
-        }
-
+    function initPlayground() {
         var playground = $(".playground");
         playground.empty();
 
@@ -67,22 +54,22 @@ $(document).ready(function () {
 
             for(var y = 0; y < boxes[x].length; y++) {
                 lineColumn.append("<div class='dot'></div>");
-                lineColumn.append("<div class='line vertical " + getLineClass(x * 2, y) + "' id='line_" + (x * 2) + "_" + y + "'></div>");
+                lineColumn.append("<div class='line vertical' id='line_" + (x * 2) + "_" + y + "'></div>");
 
                 if(lastLineColumn != null) {
                     lastLineColumn.append("<div class='dot'></div>");
-                    lastLineColumn.append("<div class='line vertical " + getLineClass(x * 2 + 2, y) + "' id='line_" + (x * 2 + 2) + "_" + y + "'></div>");
+                    lastLineColumn.append("<div class='line vertical' id='line_" + (x * 2 + 2) + "_" + y + "'></div>");
 
                     if(y == boxes[x].length - 1) {
                         lastLineColumn.append("<div class='dot'></div>");
                     }
                 }
 
-                column.append("<div class='line horizontal " + getLineClass(x * 2 + 1, y) + "' id='line_" + (x * 2 + 1) + "_" + y + "'></div>");
-                column.append("<div class='box " + getBoxClass(x, y) + "'></div>");
+                column.append("<div class='line horizontal' id='line_" + (x * 2 + 1) + "_" + y + "'></div>");
+                column.append("<div class='box' id='box_" + x + "_" + y + "'></div>");
 
                 if(y == boxes[x].length - 1) {
-                    column.append("<div class='line horizontal " + getLineClass(x * 2 + 1, y + 1) + "' id='line_" + (x * 2 + 1) + "_" + (y + 1) + "'></div>");
+                    column.append("<div class='line horizontal' id='line_" + (x * 2 + 1) + "_" + (y + 1) + "'></div>");
                     lineColumn.append("<div class='dot'></div>");
                 }
             }
@@ -101,6 +88,53 @@ $(document).ready(function () {
                 turn();
             }
         });
+    }
+
+    function drawPlayground() {
+        $(".board #score_1").text(getScore(1));
+        $(".board #score_2").text(getScore(2));
+
+        if(player == 1) {
+            $("#player_1").addClass("turn");
+            $("#player_2").removeClass("turn");
+        } else if(player == 2) {
+            $("#player_2").addClass("turn");
+            $("#player_1").removeClass("turn");
+        } else {
+            $("#player_1").removeClass("turn");
+            $("#player_2").removeClass("turn");
+        }
+
+        for(var x = 0; x < boxes.length; x++) {
+            for(var y = 0; y < boxes[x].length; y++) {
+                var box = boxes[x][y];
+                var elem = $("#box_" + x + "_" + y);
+
+                setClass(elem, box);
+            }
+        }
+
+        for(x = 0; x < lines.length; x++) {
+            for(y = 0; y < lines[x].length; y++) {
+                var line = lines[x][y];
+                elem = $("#line_" + x + "_" + y);
+
+                setClass(elem, line);
+            }
+        }
+    }
+
+    function setClass(elem, player) {
+        if(player == 1) {
+            elem.addClass("blue");
+            elem.removeClass("red");
+        } else if(player == 2) {
+            elem.addClass("red");
+            elem.removeClass("blue");
+        } else {
+            elem.removeClass("blue");
+            elem.removeClass("red");
+        }
     }
 
     function markLine(x, y) {
