@@ -190,24 +190,6 @@ $(document).ready(function () {
         }
     }
 
-    function getLineClass(x, y) {
-        if(lines[x][y] == 1) {
-            return "blue";
-        } else if(lines[x][y] == 2) {
-            return "red";
-        }
-        return "";
-    }
-
-    function getBoxClass(x, y) {
-        if(boxes[x][y] == 1) {
-            return "blue";
-        } else if(boxes[x][y] == 2) {
-            return "red";
-        }
-        return "";
-    }
-
     function getBoxesForLine(x, y) {
         var boxes = [];
 
